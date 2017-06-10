@@ -7,6 +7,7 @@ import numpy as np
 import sqlite3
 
 def db_connect():
+    """データベースに接続してtoken情報を取得する"""
     db = sqlite3.connect('../token.db')
     db_data = db.cursor()
     db_data= db_data.execute("select * from ttoken;")
@@ -14,22 +15,30 @@ def db_connect():
     db.close()
     return db_ret
 
-acctoken=db_connect()
 
-time_list = np.random.randint(300,1000,size=100)
+
+acctoken=db_connect()#データベース処理
+
+time_list = np.random.randint(300,1000,size=100)#ランダム
+
+#ツイート内容...そのうちデータベースかcsvに移行
 twitt_list = ["やべー","かっこいい","おなか減った","やったー","あ","コート返してほしい...",
               "おいしそう","美味","パケット...","数学...","fedora","なる","あのネクタイほしい",
               "アニメ見よ...","眠たい...","眠い","マックに行きたい","楽しい!!","オフ","オン"]
 
+#twitter
 consumer_key=acctoken[0][0]
 consumer_secret= acctoken[0][1]
 token= acctoken[0][2]
 tokensecret= acctoken[0][3]
 
+
+#auth認証
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(token, tokensecret)
 api = tweepy.API(auth)
 
+#ツイート
 for i in range(10):
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(token, tokensecret)
